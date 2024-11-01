@@ -1,2 +1,1 @@
-/data/files/
-!data/files/.gitkeep
+/data/files/*.tsv
