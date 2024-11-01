@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSH Candidate Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Results for "{{ input_text.split()[:10] | join(' ') }}..."</h1>
+        <p><strong>Total Candidates Found:</strong> {{ results|length }}</p>
+
+        <!-- Display the list of candidate document IDs -->
+        <p><strong>Candidate Document IDs:</strong> 
+            {% for doc_id, text in results %}
+                {{ doc_id }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        {% if results %}
+            <ul>
+                {% for doc_id, text in results %}
+                    <li>
+                        <strong>Document ID {{ doc_id }}:</strong>
+                        <p>{{ text }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; color: #888;">No candidates found.</p>
+        {% endif %}
+        
+        <a href="/" class="back-link">Go back</a>
+    </div>
+</body>
+</html>

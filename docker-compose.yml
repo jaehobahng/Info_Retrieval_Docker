@@ -1,0 +1,58 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db  # Persistent volume for MongoDB data
+
+  data_loader:
+    build:
+      context: ./data
+    depends_on:
+      - mongo
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+    volumes:
+      - ./data/files:/data  # Mount the data directory to access TSV files
+    # command: python /app/load_data.py
+
+  deduplication:
+    build:
+      context: ./LSH
+      dockerfile: Dockerfile
+    container_name: deduplication_service
+    depends_on:
+      data_loader:
+        condition: service_completed_successfully
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+    volumes:
+      - ./LSH:/app/
+    links:
+      - mongo
+
+  frontend:
+    build:
+      context: ./app  # Directory containing Flask app Dockerfile
+    container_name: frontend_service
+    depends_on:
+      deduplication:
+        condition: service_completed_successfully
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+    ports:
+      - "5000:5000"  # Expose port 5000 for accessing Flask app
+    volumes:
+      - ./app:/app/
+    links:
+      - mongo
+      - deduplication
+
+
+volumes:
+  mongo_data:

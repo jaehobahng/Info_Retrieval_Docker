@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSH Candidate Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>LSH Candidate Search</h1>
+        <h4>Enter Text : (Please enter at least 10 words)</h4>
+        <form method="post" action="/">
+            <textarea id="input_text" name="input_text" rows="20"></textarea>
+            <br><br>
+
+            <label for="selected_index">Select Index:</label>
+            <select id="selected_index" name="selected_index">
+                {% for index in filtered_collections %}
+                    <option value="{{ index }}">{{ index }}</option>
+                {% endfor %}
+            </select>
+            <br><br>
+
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</body>
+</html>
