@@ -18,13 +18,19 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    min-height: 30vh; /* Minimum height of 50% of the viewport */
-    max-height: 100vh;
+    min-height: 90vh; /* Minimum height of 50% of the viewport */
+    max-height: 90vh;
     overflow-y: auto; /* Adds a scrollbar if content exceeds max-height */
 }
 
 h1 {
     font-size: 1.5em;
+    color: #333;
+    text-align: center;
+}
+
+h4 {
+    font-size: 1em;
     color: #333;
     text-align: center;
 }
@@ -61,6 +67,8 @@ p {
 textarea, select {
     width: 100%;
     margin-top: 10px;
+    /* text-align: center; */
+    resize: vertical;
 }
 
 button {
@@ -68,4 +76,6 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    float: right;
+    /* width: 10% */
 }

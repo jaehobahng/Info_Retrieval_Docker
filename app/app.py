@@ -27,6 +27,7 @@ k = 10
 # Load available index collections at startup
 collections = db.list_collection_names()
 filtered_collections = [name for name in collections if name.endswith('_index')]
+filtered_collections.sort()
 
 # Load the data dictionary and index from MongoDB at startup
 data_dict = {}
