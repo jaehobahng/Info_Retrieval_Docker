@@ -21,6 +21,6 @@ COPY . /app/
 RUN pip install -e .
 
 # Set the entry point to run your package (if needed)
-# CMD ["tail", "-f", "/dev/null"]
-CMD ["python", "src/deduplication/load.py"]
+CMD ["tail", "-f", "/dev/null"]
+# CMD ["python", "src/deduplication/load.py"]
 # CMD ["python", "src/deduplication/main.py"]
