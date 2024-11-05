@@ -20,7 +20,7 @@ db = client['data_db']  # Connect to the database
 
 
 collections = db.list_collection_names()
-filtered_collections = [name for name in collections if (not name.endswith('_index') and name != 'five')]  # Filter out too short
+filtered_collections = [name for name in collections if (not name.endswith('_index') and name != 'five' and not name.endswith('_signature'))]  # Filter out too short
 
 
 # Function to fetch data from a specific collection
@@ -76,6 +76,69 @@ for i in filtered_collections:
         if count % 10000 == 0:
             collection.insert_many(documents)
             documents = []  # Clear the batch list after insertion
+
+    # Insert any remaining documents in the final batch
+    if documents:
+        collection.insert_many(documents)
+
+    print(f"All {index_name} signatures stored in MongoDB.")
+
+
+
+
+# convert signatures and not indexes
+
+# Function to convert all values in a nested dictionary to strings
+def convert_values_to_strings(data):
+    if isinstance(data, dict):
+        return {key: convert_values_to_strings(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [convert_values_to_strings(element) for element in data]
+    else:
+        return str(data)
+
+# filtered_collections = ['hundred','onek']
+
+for i in filtered_collections:
+    
+    index_name = i + "_signature"
+    collection = db[index_name]
+    # collection.delete_many({})
+
+    # Check if the index collection already has data
+    if collection.count_documents({}) > 0:
+        print(f"{index_name} already contains data, skipping...")
+        continue  # Skip to the next collection if data is already present
+
+    print(f"Processing collection: {index_name}")
+
+
+    data_dict = fetch_data_from_collection(i)
+
+    lsh = LSH(num_hashes=100, num_bands=20, rows_per_band=5, k=10)
+    signatures = lsh.compute_minhash_signatures(data_dict)
+
+
+        
+
+    signatures = convert_values_to_strings(signatures)
+
+    documents = []
+    count = 0
+
+    for key, value in signatures.items():
+        document = {
+            "doc": key,
+            "signature": value
+        }
+        documents.append(document)
+        count += 1
+
+        # If the batch size is reached, insert and reset the documents list
+        if count % 10000 == 0:
+            collection.insert_many(documents)
+            documents = []  # Clear the batch list after insertion
+            print(f"{count} input in mongodb")
 
     # Insert any remaining documents in the final batch
     if documents:

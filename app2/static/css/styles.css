@@ -1,0 +1,81 @@
+/* Global styling for layout and readability */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    min-height: 90vh; /* Minimum height of 50% of the viewport */
+    max-height: 90vh;
+    overflow-y: auto; /* Adds a scrollbar if content exceeds max-height */
+}
+
+h1 {
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+}
+
+h4 {
+    font-size: 1em;
+    color: #333;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #e9ecef;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+p {
+    text-align: center;
+    color: #888;
+}
+
+textarea, select {
+    width: 100%;
+    margin-top: 10px;
+    /* text-align: center; */
+    resize: vertical;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    float: right;
+    /* width: 10% */
+}

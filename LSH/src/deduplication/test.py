@@ -20,19 +20,19 @@ db = client['data_db']  # Connect to the database
 
 
 collections = db.list_collection_names()
-filtered_collections = [name for name in collections if (not name.endswith('_index') and name != 'five')]  # Filter out too short
+filtered_collections = [name for name in collections if (not name.endswith('_index') and name != 'five' and not name.endswith('_signature'))]  # Filter out too short
 
 
 
-collection = db["hundred_signature"]
+# collection = db["hundred_signature"]
 
-# Drop the collection
-collection.drop()
+# # Drop the collection
+# collection.drop()
 
-collection = db["onek_signature"]
+# collection = db["onek_signature"]
 
-# Drop the collection
-collection.drop()
+# # Drop the collection
+# collection.drop()
 
 
 # Function to fetch data from a specific collection
@@ -44,7 +44,15 @@ def fetch_data_from_collection(collection_name):
     result_dict = {document['_id']: document['text'] for document in documents}
     return result_dict
 
-filtered_collections = ['hundred','onek']
+def convert_values_to_strings(data):
+    if isinstance(data, dict):
+        return {key: convert_values_to_strings(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [convert_values_to_strings(element) for element in data]
+    else:
+        return str(data)
+
+# filtered_collections = ['hundred','onek']
 
 for i in filtered_collections:
     
@@ -65,13 +73,7 @@ for i in filtered_collections:
     lsh = LSH(num_hashes=100, num_bands=20, rows_per_band=5, k=10)
     signatures = lsh.compute_minhash_signatures(data_dict)
 
-    def convert_values_to_strings(data):
-        if isinstance(data, dict):
-            return {key: convert_values_to_strings(value) for key, value in data.items()}
-        elif isinstance(data, list):
-            return [convert_values_to_strings(element) for element in data]
-        else:
-            return str(data)
+
         
 
     signatures = convert_values_to_strings(signatures)

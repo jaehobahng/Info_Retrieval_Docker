@@ -54,5 +54,24 @@ services:
       - deduplication
 
 
+  frontend2:
+    build:
+      context: ./app2  # Directory containing Flask app Dockerfile
+    container_name: frontend_service_2
+    depends_on:
+      deduplication:
+        condition: service_completed_successfully
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+    ports:
+      - "5001:5000"  # Expose port 5000 for accessing Flask app
+    volumes:
+      - ./app2:/app/
+    links:
+      - mongo
+      - deduplication
+
+
 volumes:
   mongo_data:
